@@ -71,7 +71,7 @@ Cls.prototype.checkIndex = async function (indexName: string, tableName: string,
 	const indexes = await this.query.query(`SELECT * FROM sqlite_master WHERE type = 'index' AND name = '${indexName}'`);
 	if (helper.isEmpty(indexes) || indexes.length <= 0) {
 		let unique = options && options.unique ? 'UNIQUE' : '';
-		await this.query.query(`CREATE ${unique} INDEX '${indexName}' ON '${tableName}' ('${columnNames.join(',')}');`);
+		await this.query.query(`CREATE ${unique} INDEX '${indexName}' ON '${tableName}' ('${columnNames.join("','")}');`);
 	}
 };
 
