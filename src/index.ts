@@ -67,10 +67,11 @@ Cls.prototype.checkTable = async function (
 	return op;
 };
 
-Cls.prototype.checkIndex = async function (indexName: string, tableName: string, columnName: string) {
+Cls.prototype.checkIndex = async function (indexName: string, tableName: string, columnNames: string[], options?: any) {
 	const indexes = await this.query.query(`SELECT * FROM sqlite_master WHERE type = 'index' AND name = '${indexName}'`);
 	if (helper.isEmpty(indexes) || indexes.length <= 0) {
-		await this.query.query(`CREATE UNIQUE INDEX '${indexName}' ON '${tableName}' ('${columnName}');`);
+		let unique = options && options.unique ? 'UNIQUE' : '';
+		await this.query.query(`CREATE ${unique} INDEX '${indexName}' ON '${tableName}' ('${columnNames.join(',')}');`);
 	}
 };
 
